@@ -23,6 +23,7 @@ criatura lobo{
     int nivel = 1
     int hp = 3;
     int ataque = 2;
+
 };
 
 criatura tortuga{
