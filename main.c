@@ -4,9 +4,9 @@
 #define nameMax 20
 #define logsHistorial 150
 
-//S43G 4/10/2026
 typedef struct jugador{
     char nombre[nameMax];
+    int vida;
     int nivel;
     bool orden;
 } jugador; //Estructura del jugador y sus estadisticas
@@ -18,12 +18,11 @@ typedef struct deck{
 
 typedef struct historial{
     char datosbatalla[logsHistorial];
-    struct historial* siguente;
+    struct historial* siguiente;
     struct historial* anterior;
 }historial;//Estructura del historial de batalla de la partida
 
 typedef struct mano{
-    // struct carta;
     struct mano* next;
     struct mano* prev;
 
@@ -57,20 +56,26 @@ void statsCriaturasIniciales() {
 
 jugador* CrearJugador(char nombre[]) {
     jugador* nuevo_jugador = malloc(sizeof(jugador));
-    jugador* nuevo_jugador2 = malloc(sizeof(jugador));
 
-    if(nuevo_jugador == NULL && nuevo_jugador2 == NULL ||
-       nuevo_jugador == NULL || nuevo_jugador2 == NULL) return NULL;
+    if(nuevo_jugador == NULL) return NULL;
 
-    printf("Ingresa un nombre jugador 1: \n");
-    scanf("%s",nuevo_jugador->nombre);
+    //copia el contenido del string a la propiedad de la structura
+    strcpy(nuevo_jugador->nombre, nombre);
 
+    //evita el desborde en la propiedad y garantiza que este terminado correctamente
+    nuevo_jugador->nombre[nameMax - 1] = '\0';
+    nuevo_jugador->vida = 0;
+    nuevo_jugador->nivel = 0;
     nuevo_jugador->orden = 0;
+    return nuevo_jugador;
+}
 
-    printf("Ingresa un nombre jugador 2: \n");
-    scanf("%s",nuevo_jugador2->nombre);
-
-    nuevo_jugador2->orden = 1;
+void EliminarJugadores(jugador** jugadores) {
+    if (*jugadores == NULL) {
+        printf("no hay del jugadores \n");
+        return;
+    }
+    free(*jugadores);
 }
 
 historial* CrearDatosHistorial(char datosbatalla[]) {
@@ -78,10 +83,11 @@ historial* CrearDatosHistorial(char datosbatalla[]) {
 
     if(nuevo_historial == NULL)return NULL;
 
-    strcpy(nuevo_historial->datosbatalla, datosbatalla),logsHistorial-1;
+    strcpy(nuevo_historial->datosbatalla, datosbatalla);
 
+    //evita el desborde de propiedad y garantiza que este terminado correctamente
     nuevo_historial->datosbatalla[logsHistorial -1] = '\0';
-    nuevo_historial->siguente = NULL;
+    nuevo_historial->siguiente = NULL;
     nuevo_historial->anterior = NULL;
     return nuevo_historial;
 }
@@ -100,10 +106,10 @@ void InsertarAlfinalHistorial(historial** inicio, char datosbatalla[]) {
     }
 
     historial* temp = *inicio;
-    while (temp->siguente != NULL) {
-        temp = temp->siguente;
+    while (temp->siguiente != NULL) {
+        temp = temp->siguiente;
     }
-    temp->siguente = nuevo_historial;
+    temp->siguiente = nuevo_historial;
     nuevo_historial->anterior = temp;
 }
 
@@ -113,7 +119,7 @@ void EliminarAlinicioHistorial(historial** inicio) {
         return;
     }
     historial* temp = *inicio;
-    *inicio = (*inicio)->siguente;
+    *inicio = (*inicio)->siguiente;
     if(*inicio != NULL) {
         (*inicio)->anterior = NULL;
     }
@@ -125,16 +131,19 @@ void MostrarHistorial(historial* inicio) {
     historial* nuevo_historial = inicio;
     while(nuevo_historial != NULL) {
         printf("%s\n",nuevo_historial->datosbatalla);
-        nuevo_historial = nuevo_historial->siguente;
+        nuevo_historial = nuevo_historial->siguiente;
     }
     printf("\n");
 }
 
-void crearJugadores();
-
 int main() {
+    //ejemplo
+    jugador* jugador1 = CrearJugador("el sabueso");
+    historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
 
+    printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
+
+    free(jugador1);
+    free(datosJ1);
+    //--------------
 }
-
-
-
