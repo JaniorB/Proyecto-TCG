@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define nameMax 20
+#define logsHistorial 150
 
 //S43G 4/10/2026
 typedef struct jugador{
@@ -15,13 +17,13 @@ typedef struct deck{
 } deck; //Estructura del mazo del jugador
 
 typedef struct historial{
-    char datosbatalla;
+    char datosbatalla[logsHistorial];
     struct historial* siguente;
     struct historial* anterior;
-}historial;//Estrucuta del historial de batalla de la partida
+}historial;//Estructura del historial de batalla de la partida
 
 typedef struct mano{
-    struct carta;
+    // struct carta;
     struct mano* next;
     struct mano* prev;
 
@@ -53,18 +55,38 @@ void statsCriaturasIniciales() {
     };
 }
 
-historial* CrearDatosHistorial(char datosbatalla) {
+jugador* CrearJugador(char nombre[]) {
+    jugador* nuevo_jugador = malloc(sizeof(jugador));
+    jugador* nuevo_jugador2 = malloc(sizeof(jugador));
+
+    if(nuevo_jugador == NULL && nuevo_jugador2 == NULL ||
+       nuevo_jugador == NULL || nuevo_jugador2 == NULL) return NULL;
+
+    printf("Ingresa un nombre jugador 1: \n");
+    scanf("%s",nuevo_jugador->nombre);
+
+    nuevo_jugador->orden = 0;
+
+    printf("Ingresa un nombre jugador 2: \n");
+    scanf("%s",nuevo_jugador2->nombre);
+
+    nuevo_jugador2->orden = 1;
+}
+
+historial* CrearDatosHistorial(char datosbatalla[]) {
     historial* nuevo_historial = malloc(sizeof(historial));
 
     if(nuevo_historial == NULL)return NULL;
 
-    nuevo_historial->datosbatalla = datosbatalla;
+    strcpy(nuevo_historial->datosbatalla, datosbatalla),logsHistorial-1;
+
+    nuevo_historial->datosbatalla[logsHistorial -1] = '\0';
     nuevo_historial->siguente = NULL;
     nuevo_historial->anterior = NULL;
     return nuevo_historial;
 }
 
-void InsertarAlfinal(historial** inicio, char datosbatalla) {
+void InsertarAlfinalHistorial(historial** inicio, char datosbatalla[]) {
     //Creando un nuevo nodo de historial
     historial* nuevo_historial = CrearDatosHistorial(datosbatalla);
 
@@ -85,7 +107,7 @@ void InsertarAlfinal(historial** inicio, char datosbatalla) {
     nuevo_historial->anterior = temp;
 }
 
-void EliminarAlinicio(historial** inicio) {
+void EliminarAlinicioHistorial(historial** inicio) {
     if(*inicio == NULL) {
         printf("no hay datos del historial\n");
         return;
@@ -102,7 +124,7 @@ void EliminarAlinicio(historial** inicio) {
 void MostrarHistorial(historial* inicio) {
     historial* nuevo_historial = inicio;
     while(nuevo_historial != NULL) {
-        printf("%c\n",nuevo_historial->datosbatalla);
+        printf("%s\n",nuevo_historial->datosbatalla);
         nuevo_historial = nuevo_historial->siguente;
     }
     printf("\n");
@@ -111,7 +133,6 @@ void MostrarHistorial(historial* inicio) {
 void crearJugadores();
 
 int main() {
-
 
 }
 
