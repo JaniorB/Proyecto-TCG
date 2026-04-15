@@ -163,7 +163,6 @@ void MostrarMano(nodeMano* tope) {
 }
 
 // 5. Sacar Carta
-criatura SacarCartaMano(nodeMano** tope, int posicion) {
     criatura SacarCartaMano(nodeMano** tope, int posicion) {
         criatura vacia = {"", "", 0, 0, 0};
         if (*tope == NULL || posicion < 1)
@@ -203,11 +202,6 @@ criatura SacarCartaMano(nodeMano** tope, int posicion) {
             free(temp);
         }
     }
-
-
-
-
-}//Fin de Sacar carta de mano
 
 
 //Fin de la mano
