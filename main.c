@@ -2,26 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <time.h>
 #define nameMax 20
 #define logsHistorial 150
-
-//Structs
-
-typedef struct  criatura{
-    char nombre[nameMax];
-    char tipo[nameMax];
-    int nivel;
-    int hp;
-    int ataque;
-}criatura; //Las cartas del juego
 
 typedef struct jugador{
     char nombre[nameMax];
     int nivel;
-    bool orden;
-    int vida;
+    int orden;
 } jugador; //Estructura del jugador y sus estadisticas
+
 
 typedef struct deck{
     int arr[60];
@@ -34,35 +23,44 @@ typedef struct historial{
     struct historial* anterior;
 }historial;//Estructura del historial de batalla de la partida
 
-//Pila
-typedef struct nodeMano {
-    criatura carta;
-    struct nodeMano* siguiente;
-} nodeMano;
+typedef struct mano{
+    struct mano* next;
+    struct mano* prev;
 
-//Lista enlazada del tablero
-typedef struct nodeTablero {
-    criatura* carta;
-    struct nodeTablero* siguiente;
-} nodeTablero;
+}mano; //mano del jugador
 
-//Cola de batalla
-typedef struct nodeCola {
-    criatura carta;
-    int pos;
-    struct nodeCola* sig;
-} nodeCola;
+typedef struct  criatura{
+    char nombre[nameMax];
+    char tipo[nameMax];
+    int nivel;
+    int hp;
+    int ataque;
+}criatura; //Las cartas del juego
 
-//Fin de los structs
+typedef struct tablero {
+    struct criatura* criaturaInvocada;
+    struct tablero* siguiente;
+}tablero;
 
+void statsCriaturasIniciales() {
+    criatura lobo = {
+        "Lobo Plateado",
+        "atacante",
+        1,
+        3,
+        2
+    };
 
-criatura plantillas[] = {
-    { "Lobo Plateado", "atacante", 1, 3, 2 },
-    { "Tortuga Terrestre", "tanque", 1, 5, 0 },
-    { "Aguila Real", "atacante", 1, 2, 3 }
-};
+    criatura tortuga = {
+        "Tortuga Terrestre",
+        "tanque",
+        1,
+        5,
+        0
+    };
+}
 
-jugador* CrearJugador(char nombre[]) {
+jugador* CrearJugador(char nombre[], int n_orden) {
     jugador* nuevo_jugador = malloc(sizeof(jugador));
 
     if(nuevo_jugador == NULL) return NULL;
@@ -72,52 +70,21 @@ jugador* CrearJugador(char nombre[]) {
 
     //evita el desborde en la propiedad y garantiza que este terminado correctamente
     nuevo_jugador->nombre[nameMax - 1] = '\0';
-    nuevo_jugador->vida = 0;
     nuevo_jugador->nivel = 0;
-    nuevo_jugador->orden = 0;
+    nuevo_jugador->orden = n_orden;
     return nuevo_jugador;
 }
-//Creacion del deck con el arreglo, pila
 
-deck* CrearDeck() {
-    deck* mazo = malloc(sizeof(deck));
-    int indice;
-    int aleatorio;
-    int temporal;
 
-    if(mazo == NULL) return NULL;
 
-    for(indice = 0; indice < 60; indice++) {
-        mazo->arr[indice] = indice % 3;
-    }//Fin del for
 
-    for(indice = 59; indice > 0; indice--) {
-        aleatorio = rand() % (indice + 1);
-
-        temporal = mazo->arr[indice];
-        mazo->arr[indice] = mazo->arr[aleatorio];
-        mazo->arr[aleatorio] = temporal;
-    }//Fin del for indice
-
-    mazo->top = 59;
-    return mazo;
-}//Crear deck fin
-
-int PopDeck(deck* mazo) {
-    if(mazo->top < 0) {
-        return -1;
-    }
-
-    return mazo->arr[mazo->top--];
-}//fin del pop, revisar si esta vacio
+/*Creacion de la mano, Pila
 
 
 
 
 
-//Fin de la Creacion del deck
-
-
+ *///Fin de creacion de la Mano
 
 
 
@@ -233,17 +200,24 @@ void Menu() {
 }
 
 
+
 int main() {
-    //ejemplo
-     // jugador* jugador1 = CrearJugador("el sabueso");
-    // historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
-    //
-    // printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
-    //
-    // free(datosJ1);
-    //-------------------
-    // SubirNivelJugador(jugador1);
-    // printf("\n");
-    // free(jugador1);
+    char nombre[nameMax];
+    jugador* jugadores[2]; //aqui se guardan los jugadores
+    for (int i = 0; i < 2; i++) { //i es el orden de los jugadores
+        printf("Ingrese el nombre del jugador %d: \n",i+1);
+        scanf("%s",nombre);
+        jugadores[i]= CrearJugador(nombre,i);
+    }
+
+    printf("\nverificacion:\n");
+    for (int i = 0; i < 2; i++) {
+        printf("Jugador: %s | Orden asignado: %d | Nivel: %d\n",
+                jugadores[i]->nombre,
+                jugadores[i]->orden,
+                jugadores[i]->nivel);
+    }
+
+    return 0;
 
 }
