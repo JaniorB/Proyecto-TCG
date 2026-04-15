@@ -37,13 +37,6 @@ typedef struct nodeMano {
     struct nodeMano* siguiente;
 } nodeMano;
 
-
-
-typedef struct tablero {
-    struct criatura* criaturaInvocada;
-    struct tablero* siguiente;
-}tablero;
-
 //Creacion de las Criaturas
 
 criatura plantillas[] = {
@@ -338,13 +331,17 @@ int main() {
         jugadores[i]= CrearJugador(nombre,i);
     }
 
-    printf("\nverificacion:\n");
-    for (int i = 0; i < 2; i++) {
-        printf("Jugador: %s | Orden asignado: %d | Nivel: %d\n",
-                jugadores[i]->nombre,
-                jugadores[i]->orden,
-                jugadores[i]->nivel);
-    }
+    criatura** tableroJ1 = (criatura**)malloc(4 * sizeof(criatura*));
+    criatura** tableroJ2 = (criatura**)malloc(4 * sizeof(criatura*));
+
+
+    // printf("\nverificacion:\n");
+    // for (int i = 0; i < 2; i++) {
+    //     printf("Jugador: %s | Orden asignado: %d | Nivel: %d\n",
+    //             jugadores[i]->nombre,
+    //             jugadores[i]->orden,
+    //             jugadores[i]->nivel);
+    // }
 
     return 0;
 
