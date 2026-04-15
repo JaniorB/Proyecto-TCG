@@ -77,8 +77,47 @@ jugador* CrearJugador(char nombre[]) {
     nuevo_jugador->orden = 0;
     return nuevo_jugador;
 }
+//Creacion del deck con el arreglo, pila
 
-deck* CrearDeck() {}
+deck* CrearDeck() {
+    deck* mazo = malloc(sizeof(deck));
+    int indice;
+    int aleatorio;
+    int temporal;
+
+    if(mazo == NULL) return NULL;
+
+    for(indice = 0; indice < 60; indice++) {
+        mazo->arr[indice] = indice % 3;
+    }//Fin del for
+
+    for(indice = 59; indice > 0; indice--) {
+        aleatorio = rand() % (indice + 1);
+
+        temporal = mazo->arr[indice];
+        mazo->arr[indice] = mazo->arr[aleatorio];
+        mazo->arr[aleatorio] = temporal;
+    }//Fin del for indice
+
+    mazo->top = 59;
+    return mazo;
+}//Crear deck fin
+
+int PopDeck(deck* mazo) {
+    if(mazo->top < 0) {
+        return -1;
+    }
+
+    return mazo->arr[mazo->top--];
+}//fin del pop, revisar si esta vacio
+
+
+
+
+
+//Fin de la Creacion del deck
+
+
 
 void EliminarJugadores(jugador** jugadores) {
     if (*jugadores == NULL) {
