@@ -1,4 +1,3 @@
-// Created by JaniorB on 4/8/2026.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +8,19 @@ typedef struct{
     char nombre[nameMax];
     int nivel;
     bool orden;
-} jugador;
+} jugador; //Estructura del jugador y sus estadisticas
+
+typedef struct {
+    int arr[60];
+    int top;
+} deck; //Estructura del mazo del jugador
+
+typedef struct {
+    struct carta;
+    struct mano* next;
+    struct mano* prev;
+
+}mano; //mano del jugador
 
 typedef struct  {
     char nombre[nameMax];
@@ -17,9 +28,9 @@ typedef struct  {
     int nivel;
     int hp;
     int ataque;
-}criatura;
+}criatura; //Las cartas del juego
 
-void StatsCriaturasIniciales() {
+void statsCriaturasIniciales() {
     criatura lobo = {
         "Lobo Plateado",
         "atacante",
@@ -37,12 +48,10 @@ void StatsCriaturasIniciales() {
     };
 }
 
-void fusionar();
-
-//funcion donde inciara el juego
-void Boot();
+void crearJugadores()
 
 int main() {
+
 
 }
 
