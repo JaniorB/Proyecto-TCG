@@ -345,7 +345,7 @@ void batallar(criatura** atacante, criatura** defensor, int i) {
         // Restar vida al defensor basado en el ataque del atacante
         defensor[i]->hp -= atacante[i]->ataque;
 
-        // Verificar si la criatura defensora murió
+        // Verificar si la criatura defensor murió
         if (defensor[i]->hp <= 0) {
             printf("El %s ha sido derrotado!\n", defensor[i]->nombre);
             defensor[i] = NULL; // Dejamos el espacio vacío
