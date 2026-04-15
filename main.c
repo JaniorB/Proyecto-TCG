@@ -151,20 +151,22 @@ void SubirNivelJugador(jugador* player) {
 void Menu() {
     int opcion = 0;
     do{
-        printf("------------------------------------\n");
-        printf("[1] - FUSIONAR ");
-        printf("[2] - ASIGNAR CARTA AL TABLERO ");
+        printf("\n------------------------------------\n");
+        printf("[1] - FUSIONAR\n");
+        printf("[2] - ASIGNAR CARTA AL TABLERO\n");
         printf("[3] - BATALLAR Y TERMINAR TURNO\n");
         printf("-------------------------------------\n");
+        printf("Ingrese una Opcion: ");
         scanf("%d",&opcion);
 
         switch(opcion) {
-            case 1://falta funcion ;
+            case 1: //hacer funcion fusionar;
                 break;
-            case 2: //falta funcion;
+            case 2: //hacer funcion asigarnar carta;
                 break;
-            case 3: //falta funcion;
+            case 3: //hacer funcion batallar;
                 break;
+            case 4: break;
             default: printf("opcion invalida\n");
                     break;
         }
@@ -174,7 +176,7 @@ void Menu() {
 
 int main() {
     //ejemplo
-     jugador* jugador1 = CrearJugador("el sabueso");
+     // jugador* jugador1 = CrearJugador("el sabueso");
     // historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
     //
     // printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
