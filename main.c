@@ -20,6 +20,7 @@ typedef struct jugador{
     char nombre[nameMax];
     int nivel;
     bool orden;
+    int vida;
 } jugador; //Estructura del jugador y sus estadisticas
 
 typedef struct deck{
@@ -52,26 +53,14 @@ typedef struct nodeCola {
     struct nodeCola* sig;
 } nodeCola;
 
+//Fin de los structs
 
 
-
-void statsCriaturasIniciales() {
-    criatura lobo = {
-        "Lobo Plateado",
-        "atacante",
-        1,
-        3,
-        2
-    };
-
-    criatura tortuga = {
-        "Tortuga Terrestre",
-        "tanque",
-        1,
-        5,
-        0
-    };
-}
+criatura plantillas[] = {
+    { "Lobo Plateado", "atacante", 1, 3, 2 },
+    { "Tortuga Terrestre", "tanque", 1, 5, 0 },
+    { "Aguila Real", "atacante", 1, 2, 3 }
+};
 
 jugador* CrearJugador(char nombre[]) {
     jugador* nuevo_jugador = malloc(sizeof(jugador));
@@ -88,6 +77,8 @@ jugador* CrearJugador(char nombre[]) {
     nuevo_jugador->orden = 0;
     return nuevo_jugador;
 }
+
+deck* CrearDeck() {}
 
 void EliminarJugadores(jugador** jugadores) {
     if (*jugadores == NULL) {
