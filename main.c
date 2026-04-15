@@ -2,12 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 #define nameMax 20
 #define logsHistorial 150
 
+//Structs
+
+typedef struct  criatura{
+    char nombre[nameMax];
+    char tipo[nameMax];
+    int nivel;
+    int hp;
+    int ataque;
+}criatura; //Las cartas del juego
+
 typedef struct jugador{
     char nombre[nameMax];
-    int vida;
     int nivel;
     bool orden;
 } jugador; //Estructura del jugador y sus estadisticas
@@ -23,19 +33,27 @@ typedef struct historial{
     struct historial* anterior;
 }historial;//Estructura del historial de batalla de la partida
 
-typedef struct mano{
-    struct mano* next;
-    struct mano* prev;
+//Pila
+typedef struct nodeMano {
+    criatura carta;
+    struct nodeMano* siguiente;
+} nodeMano;
 
-}mano; //mano del jugador
+//Lista enlazada del tablero
+typedef struct nodeTablero {
+    criatura* carta;
+    struct nodeTablero* siguiente;
+} nodeTablero;
 
-typedef struct  criatura{
-    char nombre[nameMax];
-    char tipo[nameMax];
-    int nivel;
-    int hp;
-    int ataque;
-}criatura; //Las cartas del juego
+//Cola de batalla
+typedef struct nodeCola {
+    criatura carta;
+    int pos;
+    struct nodeCola* sig;
+} nodeCola;
+
+
+
 
 void statsCriaturasIniciales() {
     criatura lobo = {
