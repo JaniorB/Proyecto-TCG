@@ -162,11 +162,55 @@ void MostrarMano(nodeMano* tope) {
     }
 }
 
-// 5. Saca una carta específica
+// 5. Sacar Carta
 criatura SacarCartaMano(nodeMano** tope, int posicion) {
+    criatura SacarCartaMano(nodeMano** tope, int posicion) {
+        criatura vacia = {"", "", 0, 0, 0};
+        if (*tope == NULL || posicion < 1)
+            return vacia;
+
+
+        if (posicion == 1)
+            return PopMano(tope);
+
+        nodeMano* temp = *tope;
+        nodeMano* anterior = NULL;
+
+        // Se avanza hasta la posicion
+        for (int i = 1; i < posicion && temp != NULL; i++) {
+            anterior = temp;
+            temp = temp->siguiente;
+        }
+
+        //
+        if (temp == NULL)
+            return vacia;
+
+        // Se junta el nodo anterior y el siguiente
+        anterior->siguiente = temp->siguiente;
+
+        criatura sacada = temp->carta;
+        free(temp);
+
+        return sacada;
+    }//Fin de sacar carta de mano
+
+    // Liberar Memoria
+    void LiberarMano(nodeMano** tope) {
+        while (*tope != NULL) {
+            nodeMano* temp = *tope;
+            *tope = (*tope)->siguiente;
+            free(temp);
+        }
+    }
 
 
 
+
+}//Fin de Sacar carta de mano
+
+
+//Fin de la mano
 
 
 
