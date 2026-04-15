@@ -75,6 +75,17 @@ jugador* CrearJugador(char nombre[], int n_orden) {
     return nuevo_jugador;
 }
 
+
+
+
+/*Creacion de la mano, Pila
+
+
+
+
+
+ *///Fin de creacion de la Mano
+
 void EliminarJugadores(jugador** jugadores) {
     if (*jugadores == NULL) {
         printf("no hay del jugadores \n");
