@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 #define nameMax 20
 #define logsHistorial 150
 
@@ -23,12 +24,6 @@ typedef struct historial{
     struct historial* anterior;
 }historial;//Estructura del historial de batalla de la partida
 
-typedef struct mano{
-    struct mano* next;
-    struct mano* prev;
-
-}mano; //mano del jugador
-
 typedef struct  criatura{
     char nombre[nameMax];
     char tipo[nameMax];
@@ -37,28 +32,66 @@ typedef struct  criatura{
     int ataque;
 }criatura; //Las cartas del juego
 
+typedef struct nodeMano {
+    criatura carta;
+    struct nodeMano* siguiente;
+} nodeMano;
+
+
+
 typedef struct tablero {
     struct criatura* criaturaInvocada;
     struct tablero* siguiente;
 }tablero;
 
-void statsCriaturasIniciales() {
-    criatura lobo = {
-        "Lobo Plateado",
-        "atacante",
-        1,
-        3,
-        2
-    };
+//Creacion de las Criaturas
 
-    criatura tortuga = {
-        "Tortuga Terrestre",
-        "tanque",
-        1,
-        5,
-        0
-    };
+criatura plantillas[] = {
+    { "Lobo Plateado", "atacante", 1, 3, 2 },
+    { "Tortuga Terrestre", "tanque", 1, 5, 0 },
+    { "Aguila Real", "atacante", 1, 2, 3 }
+};
+
+//Fin de la creacion de las criaturas
+
+//Creacion del deck
+deck* CrearDeck() {
+    deck* mazo = malloc(sizeof(deck));
+    int indice;
+    int aleatorio;
+    int temporal;
+
+    if(mazo == NULL) {
+        return NULL;
+    }
+
+    for(indice = 0; indice < 60; indice++) {
+        mazo->arr[indice] = indice % 3;
+    }
+
+    for(indice = 59; indice > 0; indice--) {
+        aleatorio = rand() % (indice + 1);
+
+        temporal = mazo->arr[indice];
+        mazo->arr[indice] = mazo->arr[aleatorio];
+        mazo->arr[aleatorio] = temporal;
+    }
+
+    mazo->top = 59;
+    return mazo;
 }
+
+int PopDeck(deck* mazo) {
+    if(mazo->top < 0) {
+        return -1;
+    }
+
+    return mazo->arr[mazo->top--];
+}
+
+
+// Fin del creacion del deck
+
 
 jugador* CrearJugador(char nombre[], int n_orden) {
     jugador* nuevo_jugador = malloc(sizeof(jugador));
@@ -77,25 +110,65 @@ jugador* CrearJugador(char nombre[], int n_orden) {
 
 
 
+//Creacion de la mano//Pila
 
-/*Creacion de la mano, Pila
+// Mete carta arriba (Push)
+void PushMano(nodeMano** tope, criatura nuevaCarta) {
+    nodeMano* nuevo = malloc(sizeof(nodeMano));
+    if (nuevo == NULL) return;
+
+    nuevo->carta = nuevaCarta;
+    nuevo->siguiente = *tope;
+    *tope = nuevo;
+}
+
+//  Saca la primera carta (Pop)
+criatura PopMano(nodeMano** tope) {
+    criatura vacia = {"", "", 0, 0, 0};
+    if (*tope == NULL) return vacia;
+
+    nodeMano* temp = *tope;
+    criatura sacada = temp->carta;
+
+    *tope = temp->siguiente;
+    free(temp);
+
+    return sacada;
+}
+
+// Contar cartas
+int ContarMano(nodeMano* tope) {
+    int total = 0;
+
+    while (tope != NULL) {
+        total++;
+        tope = tope->siguiente;
+    }
+    return total;
+}
+
+// 4. Muestra la mano
+void MostrarMano(nodeMano* tope) {
+    if (tope == NULL) {
+        printf("La mano esta vacia\n");
+        return;
+    }
+
+    int i = 1;
+    while (tope != NULL) {
+        printf("[%d] %s | Tipo: %s | Nivel: %d | HP: %d | ATK: %d\n",i, tope->carta.nombre, tope->carta.tipo, tope->carta.nivel, tope->carta.hp, tope->carta.ataque);
+        tope = tope->siguiente; //Se pas a la siguiente
+        i++;
+    }
+}
+
+// 5. Saca una carta específica
+criatura SacarCartaMano(nodeMano** tope, int posicion) {
 
 
 
 
 
- *///Fin de creacion de la Mano
-
-
-
-
-/*Creacion de la mano, Pila
-
-
-
-
-
- *///Fin de creacion de la Mano
 
 void EliminarJugadores(jugador** jugadores) {
     if (*jugadores == NULL) {
