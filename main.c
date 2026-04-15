@@ -206,6 +206,23 @@ void MostrarMano(nodeMano* tope) {
 
 //Fin de la mano
 
+//Repartir mano
+void RepartirMano(deck* mazo, nodeMano** manoJugador) {
+    int i;
+    int idCarta;
+
+    for(i = 0; i < 5; i++) {
+        idCarta = PopDeck(mazo);
+
+        if(idCarta == -1) {
+            printf("El deck ya no tiene mas cartas\n");
+            return;
+        }
+
+        PushMano(manoJugador, plantillas[idCarta]);
+    }
+}//Fin de repartir mano
+
 
 
 void EliminarJugadores(jugador** jugadores) {
