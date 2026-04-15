@@ -320,7 +320,23 @@ void Menu() {
     }while(opcion != 4);
 }
 
+void inicializarTablero(criatura** campo) {
+    for(int i = 0; i < 4; i++) {
+        campo[i] = NULL;
+    }
+}
 
+void imprimirTablero(criatura** campo) {
+    for(int i = 0; i < 4; i++) {
+        printf("| ");
+        if (campo[i] == NULL) {
+            printf("vacio ");
+        }else {
+            printf("%s Nvl:%d Atk:%d HP:%d",campo[i]->nombre, campo[i]->nivel, campo[i]->ataque, campo[i]->hp);
+        }
+    }
+    printf("\n ");
+}
 
 int main() {
     char nombre[nameMax];
@@ -334,6 +350,15 @@ int main() {
     criatura** tableroJ1 = (criatura**)malloc(4 * sizeof(criatura*));
     criatura** tableroJ2 = (criatura**)malloc(4 * sizeof(criatura*));
 
+    inicializarTablero(tableroJ1);
+    inicializarTablero(tableroJ2);
+
+    tableroJ1[0] = &plantillas[0];
+    tableroJ2[1] = &plantillas[1];
+    printf("Campo Jugador 1\n");
+    imprimirTablero(tableroJ1);
+    printf("Campo Jugador 2\n");
+    imprimirTablero(tableroJ2);
 
     // printf("\nverificacion:\n");
     // for (int i = 0; i < 2; i++) {
