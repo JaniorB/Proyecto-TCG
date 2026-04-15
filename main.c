@@ -137,14 +137,52 @@ void MostrarHistorial(historial* inicio) {
     printf("\n");
 }
 
+void SubirNivelJugador(jugador* player) {
+    if(player->nivel > 3) {
+        printf("el jugador ha alcanzado el maximo nivel\n");
+        return;
+    }
+
+    player->nivel = player->nivel + 1;
+    printf("el nivel del jugador es: %d\n",player->nivel);
+
+}
+
+void Menu() {
+    int opcion = 0;
+    do{
+        printf("------------------------------------\n");
+        printf("[1] - FUSIONAR ");
+        printf("[2] - ASIGNAR CARTA AL TABLERO ");
+        printf("[3] - BATALLAR Y TERMINAR TURNO\n");
+        printf("-------------------------------------\n");
+        scanf("%d",&opcion);
+
+        switch(opcion) {
+            case 1://falta funcion ;
+                break;
+            case 2: //falta funcion;
+                break;
+            case 3: //falta funcion;
+                break;
+            default: printf("opcion invalida\n");
+                    break;
+        }
+    }while(opcion != 4);
+}
+
+
 int main() {
     //ejemplo
-    jugador* jugador1 = CrearJugador("el sabueso");
-    historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
-
-    printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
-
-    free(jugador1);
-    free(datosJ1);
+     jugador* jugador1 = CrearJugador("el sabueso");
+    // historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
+    //
+    // printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
+    //
+    // free(datosJ1);
     //-------------------
+    // SubirNivelJugador(jugador1);
+    // printf("\n");
+    // free(jugador1);
+
 }
