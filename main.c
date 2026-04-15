@@ -7,10 +7,10 @@
 
 typedef struct jugador{
     char nombre[nameMax];
-    int vida;
     int nivel;
-    bool orden;
+    int orden;
 } jugador; //Estructura del jugador y sus estadisticas
+
 
 typedef struct deck{
     int arr[60];
@@ -37,6 +37,11 @@ typedef struct  criatura{
     int ataque;
 }criatura; //Las cartas del juego
 
+typedef struct tablero {
+    struct criatura* criaturaInvocada;
+    struct tablero* siguiente;
+}tablero;
+
 void statsCriaturasIniciales() {
     criatura lobo = {
         "Lobo Plateado",
@@ -55,7 +60,7 @@ void statsCriaturasIniciales() {
     };
 }
 
-jugador* CrearJugador(char nombre[]) {
+jugador* CrearJugador(char nombre[], int n_orden) {
     jugador* nuevo_jugador = malloc(sizeof(jugador));
 
     if(nuevo_jugador == NULL) return NULL;
@@ -65,9 +70,8 @@ jugador* CrearJugador(char nombre[]) {
 
     //evita el desborde en la propiedad y garantiza que este terminado correctamente
     nuevo_jugador->nombre[nameMax - 1] = '\0';
-    nuevo_jugador->vida = 0;
     nuevo_jugador->nivel = 0;
-    nuevo_jugador->orden = 0;
+    nuevo_jugador->orden = n_orden;
     return nuevo_jugador;
 }
 
@@ -174,17 +178,24 @@ void Menu() {
 }
 
 
+
 int main() {
-    //ejemplo
-     // jugador* jugador1 = CrearJugador("el sabueso");
-    // historial* datosJ1 = CrearDatosHistorial("hizo 2 ataques");
-    //
-    // printf("[%s]: %s \n",jugador1->nombre,datosJ1->datosbatalla);
-    //
-    // free(datosJ1);
-    //-------------------
-    // SubirNivelJugador(jugador1);
-    // printf("\n");
-    // free(jugador1);
+    char nombre[nameMax];
+    jugador* jugadores[2]; //aqui se guardan los jugadores
+    for (int i = 0; i < 2; i++) { //i es el orden de los jugadores
+        printf("Ingrese el nombre del jugador %d: \n",i+1);
+        scanf("%s",nombre);
+        jugadores[i]= CrearJugador(nombre,i);
+    }
+
+    printf("\nverificacion:\n");
+    for (int i = 0; i < 2; i++) {
+        printf("Jugador: %s | Orden asignado: %d | Nivel: %d\n",
+                jugadores[i]->nombre,
+                jugadores[i]->orden,
+                jugadores[i]->nivel);
+    }
+
+    return 0;
 
 }
