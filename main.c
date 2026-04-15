@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #define nameMax 20
 #define logsHistorial 150
 
@@ -18,24 +19,30 @@ typedef struct deck{
 
 typedef struct historial{
     char datosbatalla[logsHistorial];
-    struct historial* siguente;
+    struct historial* siguiente;
     struct historial* anterior;
 }historial;//Estructura del historial de batalla de la partida
 
-typedef struct mano{
-    // struct carta;
-    struct mano* next;
-    struct mano* prev;
 
-}mano; //mano del jugador
 
-typedef struct  criatura{
+typedef struct criatura{
     char nombre[nameMax];
     char tipo[nameMax];
     int nivel;
     int hp;
     int ataque;
 }criatura; //Las cartas del juego
+
+
+
+typedef struct mano{
+    // struct carta;
+    criatura carta; 
+    struct mano* siguiente;
+    struct mano* anterior;
+
+}mano; //mano del jugador
+
 
 void statsCriaturasIniciales() {
     criatura lobo = {
