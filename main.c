@@ -320,25 +320,42 @@ void Menu() {
     }while(opcion != 4);
 }
 
-void inicializarTablero(criatura** campo) {
+void inicializarTablero(criatura** campo1, criatura** campo2) {
     for(int i = 0; i < 4; i++) {
-        campo[i] = NULL;
+        campo1[i] = NULL;
+        campo2[i] = NULL;
     }
 }
 
 void imprimirTablero(criatura** campo) {
     for(int i = 0; i < 4; i++) {
-        printf("| ");
+        printf("|");
         if (campo[i] == NULL) {
-            printf("vacio ");
+            printf("vacio");
         }else {
             printf("%s Nvl:%d Atk:%d HP:%d",campo[i]->nombre, campo[i]->nivel, campo[i]->ataque, campo[i]->hp);
         }
     }
-    printf("\n ");
+    printf("|\n ");
 }
+void batallar(criatura** atacante, criatura** defensor, int i) {
+    if (atacante[i] != NULL && defensor[i] != NULL) {
+        printf("\n%s ataca a %s!\n", atacante[i]->nombre, defensor[i]->nombre);
 
+        // Restar vida al defensor basado en el ataque del atacante
+        defensor[i]->hp -= atacante[i]->ataque;
+
+        // Verificar si la criatura defensora murió
+        if (defensor[i]->hp <= 0) {
+            printf("El %s ha sido derrotado!\n", defensor[i]->nombre);
+            defensor[i] = NULL; // Dejamos el espacio vacío
+        }
+    } else {
+        printf("\nNo hay combate en el campo %d (uno de los espacios esta vacio).\n", i + 1);
+    }
+}
 int main() {
+    int vida = 0;
     char nombre[nameMax];
     jugador* jugadores[2]; //aqui se guardan los jugadores
     for (int i = 0; i < 2; i++) { //i es el orden de los jugadores
@@ -350,11 +367,17 @@ int main() {
     criatura** tableroJ1 = (criatura**)malloc(4 * sizeof(criatura*));
     criatura** tableroJ2 = (criatura**)malloc(4 * sizeof(criatura*));
 
-    inicializarTablero(tableroJ1);
-    inicializarTablero(tableroJ2);
+    inicializarTablero(tableroJ1,tableroJ2);
 
-    tableroJ1[0] = &plantillas[0];
+    tableroJ1[1] = &plantillas[0];
     tableroJ2[1] = &plantillas[1];
+    printf("Campo Jugador 1\n");
+    imprimirTablero(tableroJ1);
+    printf("Campo Jugador 2\n");
+    imprimirTablero(tableroJ2);
+
+    batallar(tableroJ1,tableroJ2,1);
+
     printf("Campo Jugador 1\n");
     imprimirTablero(tableroJ1);
     printf("Campo Jugador 2\n");
